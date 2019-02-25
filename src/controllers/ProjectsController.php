@@ -55,8 +55,8 @@ function editAction($projectId)
     $form = view(
         $formTemplate,
         [
-            'projects' => $projects,
-            'person' => $person,
+            'project' => $project,
+            'persons' => $persons,
             'departments' => $departments,
         ]
     );

@@ -16,6 +16,11 @@
 <input type="text" id="budget" class="uk-input uk-form-width-large" name="budget" value="<?= $project[0]['budget']; ?>"/>
 </div>
 
+<div class="uk-margin">
+<label class="uk-form-label" for="description"><?= __('Description');?></label>
+<input type="text" id="description" class="uk-input uk-form-width-large" name="description" value="<?= $project[0]['description']; ?>"/>
+</div>
+
 
 <!-- <div class="uk-margin">
 <label class="uk-form-label" for="department_id"><= __('Department');?></label>
@@ -40,7 +45,7 @@
 <?php endforeach;?>
 <li>
 <input type="checkbox" name="person_id[]" value="<?= $person['id'];?>" class="uk-checkbox"<?= $checked;?>>
-<span><?= $person['name' . 'lastname'];?></span>
+<span><?= $person['name'] . ' ' . $person['lastname'];?></span>
 </li>
 <?php endforeach;?>
 </ul>

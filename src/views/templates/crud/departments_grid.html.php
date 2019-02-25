@@ -39,16 +39,16 @@
 <div class="uk-card uk-card-default uk-card-body uk-card-hover">
 <article class="uk-article">
 
-<!-- <h3><span uk-icon="user"></span>&nbsp;<= $person['name'];?> <= $person['lastname'];?></h3>
+<h3><span uk-icon="tag"></span>&nbsp;&nbsp;<?= $department['title'];?></h3>
 <hr>
-<h4><= __('Department');?></h4>
-<p><= $person['title'];?></p>
-<h4><= __('Projects');?></h4>
+<!-- <h4><= __('Department');?></h4>
+<p><= $person['title'];?></p> -->
+<h4><?= __('Persons');?></h4>
 <ul class="uk-list">
-<php foreach ($person['project_id'] as $project): ?>
-<li><= $project['title'];?></li>
-<php endforeach;?>
-</ul> -->
+<?php foreach ($department['id'] as $person['department_id']): ?>
+<li><?= $person['name'];?></li>
+<?php endforeach;?>
+</ul>
 
 <h5><?= __('Actions');?></h5>
 <input class="uk-checkbox" type="checkbox" name="trash[]" value="<?= $department['id'];?>">&nbsp;

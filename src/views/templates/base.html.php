@@ -22,33 +22,11 @@
                     <a href="<?= BASE_URL; ?>" class="uk-navbar-item uk-logo"  uk-navbar="mode: click">Persons</a>
                 </div>
                 <div class>
-                    <a href="<?= BASE_URL; ?>" class="uk-navbar-item uk-logo"  uk-navbar="mode: click">Projects</a>
+                    <a href="<?= BASE_URL . '/projects/list';?>" class="uk-navbar-item uk-logo"  uk-navbar="mode: click">Projects</a>
                 </div>
                 <div class>
-                    <a href="<?= BASE_URL; ?>" class="uk-navbar-item uk-logo"  uk-navbar="mode: click">Departments</a>
+                    <a href="<?= BASE_URL . '/departments/list';?>" class="uk-navbar-item uk-logo"  uk-navbar="mode: click">Departments</a>
                 </div>
-                <!-- <nav class="uk-navbar-container uk-margin uk-light uk-background-secondary uk-position-center-right" uk-navbar="mode: click">
-
-                    <div class="uk-navbar-left uk-light uk-background-secondary">
-
-                        <ul class="uk-navbar-nav uk-light uk-background-secondary">
-                            <li class="uk-active uk-light uk-background-secondary"><a href="#">Persons</a></li>
-                            <li class="uk-light uk-background-secondary"><a href="#">Projects</a></li>
-                            <li class="uk-light uk-background-secondary"><a href="#">Departments</a></li>
-                            <li><a href="#">Projects</a>
-                                <div class="uk-navbar-dropdown uk-light uk-background-secondary">
-                                    <ul class="uk-nav uk-navbar-dropdown-nav uk-light uk-background-secondary">
-                                        <li class="uk-active uk-light uk-background-secondary"><a href="#">Active</a></li>
-                                        <li><a href="#">Item</a></li>
-                                        <li><a href="#">Item</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
-
-                    </div>
-                </nav> -->
                 <!-- NAUJAI IRASYTAS - PABAIGA -->
 
             </div>

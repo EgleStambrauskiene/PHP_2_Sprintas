@@ -12,7 +12,7 @@ function listAction($listMode = 'list')
     $baseTemplate = ROOT_DIR . '/src/views/templates/base.html.php';
     $trashConfirmTemplate = ROOT_DIR . '/src/views/templates/crud/trash_confirm_modal.html.php';
 
-    $persons = departmentAll(false, ['fields' => ['title ASC']]);
+    $departments = departmentAll(false, ['fields' => ['title ASC']]);
 
     if (isset($departments['fail'])) {
         $_SESSION['crud']['danger'][] = $departments['fail'];
@@ -55,8 +55,8 @@ function editAction($departmentId)
     $form = view(
         $formTemplate,
         [
-            // 'person' => $person,
-            // 'projects' => $projects,
+            'person' => $person,
+            'projects' => $projects,
             'departments' => $departments,
         ]
     );
@@ -72,23 +72,24 @@ function trashAction()
     return redirect(BASE_URL . '/departments' . '/' . $_SESSION['listmode']);
 }
 
-// function addAction()
-// {
-//     $formTemplate = ROOT_DIR . '/src/views/templates/crud/persons_add_form.html.php';
-//     $baseTemplate = ROOT_DIR . '/src/views/templates/base.html.php';
-//     $departments = departmentAll(true);
-//     if (isset($departments['fail'])) {
-//         $_SESSION['crud']['danger'][] = $departments['fail'];
-//         $departments = [];
-//     }
-//     $projects = projectAll(true);
-//     if (isset($departments['fail'])) {
-//         $_SESSION['crud']['danger'][] = $projects['fail'];
-//         $projects = [];
-//     }
-//     $form = view($formTemplate, ['projects' => $projects, 'departments' => $departments,]);
-//     return view($baseTemplate, ['form' => $form]);
-// }
+function addAction()
+{
+    $formTemplate = ROOT_DIR . '/src/views/templates/crud/departments_add_form.html.php';
+    $baseTemplate = ROOT_DIR . '/src/views/templates/base.html.php';
+    $departments = departmentAll(true);
+    // if (isset($departments['fail'])) {
+    //     $_SESSION['crud']['danger'][] = $departments['fail'];
+    //     $departments = [];
+    // }
+    // $projects = projectAll(true);
+    // if (isset($departments['fail'])) {
+    //     $_SESSION['crud']['danger'][] = $projects['fail'];
+    //     $projects = [];
+    // }
+    //$form = view($formTemplate, ['projects' => $projects, 'departments' => $departments,]);
+    $form = view($formTemplate);
+    return view($baseTemplate, ['form' => $form]);
+}
 
 function saveAction()
 {

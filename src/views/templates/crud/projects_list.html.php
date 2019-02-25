@@ -62,7 +62,7 @@
 <ul class="uk-list">
 
 <?php foreach ($project['person_id'] as $person): ?>
-<li><?= $person['name' . 'lastname'];?></li>
+<li><?= $person['name'] . ' ' . $person['lastname'];?></li>
 <?php endforeach;?>
 
 </ul>

@@ -8,7 +8,7 @@ function projectAll($unAttached = false, $orderBy = [])
     $order = '';
 
     if (isset($orderBy['fields'])) {
-        $order = implode(', ', $orderBy['fields']);
+        $order = implode(', ', $orderBy['fields']);//implode - Join array elements (= strigs) with a string (glue string = ', ').
         if ($order) {
             $order = ' ORDER BY ' . $order;
         }
@@ -19,7 +19,8 @@ function projectAll($unAttached = false, $orderBy = [])
     if (isset($projects['fail']) or $unAttached) {
         return $projects;
     }
-    return personSelectProjects($projects);
+    
+    return projectSelectPersons($projects);
 }
 
 function projectById($projectId, $unAttached = false)
@@ -33,13 +34,13 @@ function projectById($projectId, $unAttached = false)
     if (isset($projects['fail']) or $unAttached) {
         return $projects;
     }
-    return personSelectProjects($projects);
+    return projectSelectPersons($projects);
 }
 
 function projectSelectPersons($projects)
 {
     foreach ($projects as $index => $project) {
-        $projects[$index]['person_id'] = projecPersons($project['id']);
+        $projects[$index]['person_id'] = projectPersons($project['id']);
     }
     return $projects;
 }
@@ -53,7 +54,7 @@ function projectPersons($projectId)
                 WHERE persons_projects.project_id = ?";
     $persons = dbQuery($query, ['i'], [$projectId]);
     if (isset($persons['fail'])) {
-        return [];
+        return [['id' => null, 'name' => $persons['fail'],]];
     }
     return $persons;
 }
@@ -83,15 +84,15 @@ function projectSave()
     }
     // Update
     if (!$insert) {
-        $update = dbQuery($query, ['s', 'd', 's', 'i'],
+        $run = dbQuery($query, ['s', 'd', 's', 'i'],
             [
                 $_POST['title'],
                 $_POST['budget'],
                 $_POST['description'],
                 $_POST['id'],
             ], 'w');
-            if (isset($update['fail'])) {
-                return $update;
+            if (isset($run['fail'])) {
+                return $run;
             }
             $lastId = $_POST['id'];
     }
@@ -124,7 +125,7 @@ function projectAttach($projectId)
     $query = "INSERT INTO staff.persons_projects (person_id, project_id) VALUES (?, ?)";
     $attach = true;
     if (isset($_POST['person_id']) and !empty($_POST['person_id'])) {
-        foreach ($_POST['prerson_id'] as $personId) {
+        foreach ($_POST['person_id'] as $personId) {
             $attach = dbQuery($query, ['i', 'i'], [$personId, $projectId], 'w');
             if (isset($attach['fail'])) {
                 return $attach;

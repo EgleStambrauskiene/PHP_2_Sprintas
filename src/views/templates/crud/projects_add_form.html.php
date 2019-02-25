@@ -29,10 +29,10 @@
 
 <div class="uk-margin">
 <ul class="uk-list">
-<?php foreach ($projects as $project):?>
+<?php foreach ($persons as $person):?>
 <li>
 <input type="checkbox" name="person_id[]" value="<?= $person['id'];?>" class="uk-checkbox">
-<span><?= $person['name' . 'lastname'];?></span>
+<span><?= $person['name'] . ' ' . $person['lastname'];?></span>
 </li>
 <?php endforeach;?>
 </ul>

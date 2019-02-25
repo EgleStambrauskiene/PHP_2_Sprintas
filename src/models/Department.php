@@ -19,7 +19,7 @@ function departmentAll($unAttached = false, $orderBy = [])
     if (isset($departments['fail']) or $unAttached) {
         return $departments;
     }
-    return departmetSelectPersons($departments);
+    return departmentSelectPersons($departments);
 }
 
 function departmentById($departmentId, $unAttached = false)
@@ -51,7 +51,7 @@ function departmentPersons($departmentId)
                 WHERE persons.department_id = ?";
     $persons = dbQuery($query, ['i'], [$departmentId]);
     if (isset($persons['fail'])) {
-        return [];
+        return [['id' => null, 'title' => $persons['fail'],]];
     }
     return $persons;
 }

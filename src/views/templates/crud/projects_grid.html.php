@@ -39,14 +39,18 @@
 <div class="uk-card uk-card-default uk-card-body uk-card-hover">
 <article class="uk-article">
 
-<h3><span uk-icon="user"></span>&nbsp;<?= $project['title'];?> <?= $project['budget'];?></h3>
+<h3><span uk-icon="cog"></span>&nbsp;&nbsp;<?= $project['title'];?></h3>
+
 <hr>
-<h4><?= __('Department');?></h4>
-<p><?= $project['name' . 'lastname'];?></p>
+<h4></span>&nbsp;<?= 'Biudžetas: ' . $project['budget'] . ' Eurų';?></h4>
+<h4></span>&nbsp;<?= 'Aprašymas: ' . $project['description'];?></h4>
+<!-- <h4><= __('Department');?></h4> -->
+<!-- <p><= $person['title'];?></p> -->
 <h4><?= __('Persons');?></h4>
 <ul class="uk-list">
 <?php foreach ($project['person_id'] as $person): ?>
-<li><?= $person['name' . 'lastname'];?></li>
+<li><?= $person['name'] . ' ' . $person['lastname'];?>
+</li>
 <?php endforeach;?>
 </ul>
 
