@@ -3,8 +3,11 @@ require_once ROOT_DIR . '/lib/Db.php';
 
 function departmentAll($unAttached = false, $orderBy = [])
 {
+    // $query = "SELECT departments.id, title, name, lastname
     $query = "SELECT departments.id, title
                 FROM staff.departments";
+                // LEFT JOIN staff.persons
+                // ON persons.department_id = departments.id";
     $order = '';
 
     if (isset($orderBy['fields'])) {
@@ -19,7 +22,8 @@ function departmentAll($unAttached = false, $orderBy = [])
     if (isset($departments['fail']) or $unAttached) {
         return $departments;
     }
-    return departmentSelectPersons($departments);
+    // return departmentSelectPersons($departments);
+    return $departments;
 }
 
 function departmentById($departmentId, $unAttached = false)
@@ -36,6 +40,8 @@ function departmentById($departmentId, $unAttached = false)
     return departmentSelectPersons($departments);
 }
 
+// Manau, reikia perrašyti iš esmės,
+// nes departamentų ir personų nesieja indexas.
 function departmentSelectPersons($departments)
 {
     foreach ($departments as $index => $department) {
@@ -44,6 +50,8 @@ function departmentSelectPersons($departments)
     return $departments;
 }
 
+// Manau, reikia perrašyti iš esmės,
+// nes departamentų ir personų nesieja pagalbinė lentelė.
 function departmentPersons($departmentId)
 {
     $query = "SELECT id, name, lastname
@@ -64,9 +72,10 @@ function departmentSave()
     if (isset($_POST['id']) and $_POST['id']) {
         $query = "UPDATE staff.departments
                     SET departments.title = ?
-                    WHERE projects.id = ?";
+                    WHERE departments.id = ?";
         $insert = false;
     }
+
     // Insert
     if ($insert) {
         $lastId = dbQuery($query, ['s'], [$_POST['title'],], 'w', true);
@@ -77,15 +86,14 @@ function departmentSave()
     }
     // Update
     if (!$insert) {
-        $update = dbQuery($query, ['s', 'd', 's', 'i'],
+        // $run = dbQuery($query, ['s', 'd', 's', 'i'],
+        $run = dbQuery($query, ['s', 'i'],
             [
                 $_POST['title'],
-                $_POST['budget'],
-                $_POST['description'],
                 $_POST['id'],
             ], 'w');
-            if (isset($update['fail'])) {
-                return $update;
+            if (isset($run['fail'])) {
+                return $run;
             }
             $lastId = $_POST['id'];
     }

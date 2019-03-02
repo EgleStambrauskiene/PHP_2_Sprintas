@@ -78,10 +78,14 @@ function projectSave()
                 $_POST['budget'],
                 $_POST['description'],
             ], 'w', true);
-        if (isset($lastId['fail'])) {
+            // var_dump($lastId, $query);
+            // die();
+            if (isset($lastId['fail'])) {
             return $lastId;
         }
+
     }
+
     // Update
     if (!$insert) {
         $run = dbQuery($query, ['s', 'd', 's', 'i'],
@@ -115,7 +119,7 @@ function projectTrash()
     }
     $query = 'DELETE FROM staff.projects WHERE projects.id IN ('
         . rtrim(str_repeat('?, ', $idCount), ', ') . ')';
-    $types = explode('-', rtrim(str_repeat('i-', $idCount),'-'));
+    $types = explode('-', rtrim(str_repeat('i-', $idCount),'-'));//reikia tikrinti
     $trash = dbQuery($query, $types, $_POST['trash'], 'w');
     return $trash;
 }
@@ -158,7 +162,7 @@ function sanitizeProjectInput()
 
     if (isset($_POST['id'])) {
         $_POST['id'] = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-    }
+    } 
 
     if (isset($_POST['trash'])) {
         $_POST['id'] = filter_var_array($_POST['trash'], FILTER_SANITIZE_NUMBER_INT);

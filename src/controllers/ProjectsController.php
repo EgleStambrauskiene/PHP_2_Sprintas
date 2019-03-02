@@ -2,7 +2,6 @@
 // Load models
 require_once ROOT_DIR . '/src/models/Project.php';
 require_once ROOT_DIR . '/src/models/Person.php';
-require_once ROOT_DIR . '/src/models/Department.php';
 
 function listAction($listMode = 'list')
 {
@@ -42,11 +41,14 @@ function editAction($projectId)
         return httpStatusAction(406);
     }
 
-    $departments = departmentAll(true);
-    if (isset($departments['fail'])) {
-        $_SESSION['crud']['danger'][] = $departments['fail'];
-        $departments = [];
-    }
+    // Šitas kodo fragmentas pradėjo trukdyti po to,
+    // kai neberequirinam Department.php failo.
+    // $departments = departmentAll(true);
+    // if (isset($departments['fail'])) {
+    //     $_SESSION['crud']['danger'][] = $departments['fail'];
+    //     $departments = [];
+    // }
+
     $persons    = personAll(true);
     if (isset($departments['fail'])) {
         $_SESSION['crud']['danger'][] = $departments['fail'];
@@ -57,7 +59,7 @@ function editAction($projectId)
         [
             'project' => $project,
             'persons' => $persons,
-            'departments' => $departments,
+            // 'departments' => $departments,
         ]
     );
     return view($baseTemplate, ['form' => $form]);
@@ -65,7 +67,7 @@ function editAction($projectId)
 
 function trashAction()
 {
-    $trashed = personTrash();
+    $trashed = projectTrash();
     if (isset($trashed['fail'])) {
         $_SESSION['crud']['danger'][] = $trashed['fail'];
     }
@@ -76,19 +78,16 @@ function addAction()
 {
     $formTemplate = ROOT_DIR . '/src/views/templates/crud/projects_add_form.html.php';
     $baseTemplate = ROOT_DIR . '/src/views/templates/base.html.php';
-    $departments = departmentAll(true);
-    if (isset($departments['fail'])) {
-        $_SESSION['crud']['danger'][] = $departments['fail'];
-        $departments = [];
-    }
+    
     $persons = personAll(true);
-    if (isset($departments['fail'])) {
+    if (isset($persons['fail'])) {
         $_SESSION['crud']['danger'][] = $persons['fail'];
         $persons = [];
     }
-    $form = view($formTemplate, ['persons' => $persons, 'departments' => $departments,]);
+    $form = view($formTemplate, ['persons' => $persons]);
     return view($baseTemplate, ['form' => $form]);
 }
+
 
 function saveAction()
 {

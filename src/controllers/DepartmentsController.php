@@ -1,6 +1,6 @@
 <?php
 // Load models
-require_once ROOT_DIR . '/src/models/Project.php';
+// require_once ROOT_DIR . '/src/models/Project.php';
 require_once ROOT_DIR . '/src/models/Person.php';
 require_once ROOT_DIR . '/src/models/Department.php';
 
@@ -19,8 +19,16 @@ function listAction($listMode = 'list')
         $departments = [];
     }
 
+    // Naujas
+    $persons = personSelected(true);
+    if (isset($persons['fail'])) {
+        $_SESSION['crud']['danger'][] = $persons['fail'];
+        $persons = [];
+    }
+    //
+
     $trashModal = view($trashConfirmTemplate);
-    $list = view($listTemplate, ['departments' => $departments, 'modal' => $trashModal]);
+    $list = view($listTemplate, ['departments' => $departments, 'modal' => $trashModal, 'persons' => $persons]);
     return view($baseTemplate, ['list' => $list]);
 }
 
@@ -42,22 +50,18 @@ function editAction($departmentId)
         return httpStatusAction(406);
     }
 
-    // $departments = departmentAll(true);
-    // if (isset($departments['fail'])) {
-    //     $_SESSION['crud']['danger'][] = $departments['fail'];
-    //     $departments = [];
-    // }
-    // $projects    = projectAll(true);
-    // if (isset($departments['fail'])) {
-    //     $_SESSION['crud']['danger'][] = $departments['fail'];
-    //     $departments = [];
-    // }
+    // Naujas
+    $persons = personSelected(true);
+    if (isset($persons['fail'])) {
+        $_SESSION['crud']['danger'][] = $persons['fail'];
+        $persons = [];
+    }
+    //
     $form = view(
         $formTemplate,
         [
-            'person' => $person,
-            'projects' => $projects,
-            'departments' => $departments,
+            'department' => $department,
+            'persons' => $persons,
         ]
     );
     return view($baseTemplate, ['form' => $form]);
@@ -76,18 +80,16 @@ function addAction()
 {
     $formTemplate = ROOT_DIR . '/src/views/templates/crud/departments_add_form.html.php';
     $baseTemplate = ROOT_DIR . '/src/views/templates/base.html.php';
-    $departments = departmentAll(true);
-    // if (isset($departments['fail'])) {
-    //     $_SESSION['crud']['danger'][] = $departments['fail'];
-    //     $departments = [];
-    // }
-    // $projects = projectAll(true);
-    // if (isset($departments['fail'])) {
-    //     $_SESSION['crud']['danger'][] = $projects['fail'];
-    //     $projects = [];
-    // }
+    // Naujas
+    $persons = personSelected(true);
+    if (isset($persons['fail'])) {
+        $_SESSION['crud']['danger'][] = $persons['fail'];
+        $persons = [];
+    }
+    // var_dump($persons);
+    
     //$form = view($formTemplate, ['projects' => $projects, 'departments' => $departments,]);
-    $form = view($formTemplate);
+    $form = view($formTemplate, ['persons' => $persons,]);
     return view($baseTemplate, ['form' => $form]);
 }
 

@@ -8,6 +8,7 @@ function personAll($unAttached = false, $orderBy = [])
                 LEFT JOIN staff.departments
                 ON persons.department_id = departments.id";
     $order = '';
+    
     if (isset($orderBy['fields'])) {
         $order = implode(', ', $orderBy['fields']);
         if ($order) {
@@ -22,27 +23,7 @@ function personAll($unAttached = false, $orderBy = [])
     }
     return personSelectProjects($persons);
 }
-//Naujas
-function personSelected($unAttached = false, $orderBy = [])
-{
-    $query = "SELECT id, name, lastname, department_id
-                FROM staff.persons";
-    $order = '';
-    if (isset($orderBy['fields'])) {
-        $order = implode(', ', $orderBy['fields']);
-        if ($order) {
-            $order = ' ORDER BY ' . $order;
-        }
-    }
-    $query  .= $order;
-    $persons = dbQuery($query);
 
-    if (isset($persons['fail']) or $unAttached) {
-        return $persons;
-    }
-    return $persons;
-}
-//
 function personById($personId, $unAttached = false)
 {
     $query = "SELECT id, name, lastname, department_id
