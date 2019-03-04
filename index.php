@@ -14,7 +14,7 @@ if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
 // Set http root
 $httpRoot = $httpProtocol . $_SERVER['HTTP_HOST'];
 
-// Set htttp directory
+// Set http directory
 $httpDir  = dirname($_SERVER['SCRIPT_NAME']);
 
 if ($httpDir == DIRECTORY_SEPARATOR) {

@@ -1,15 +1,19 @@
 <?php
 require_once ROOT_DIR . '/lib/Db.php';
 
-function departmentAll($unAttached = false, $orderBy = [])
+/**
+ * Forms an array containing the requested data of all departments
+ * @param  array $orderBy [] 
+ * @return array $departments associative array of departments data.
+ */
+function departmentAll($orderBy = [])
 {
-    // $query = "SELECT departments.id, title, name, lastname
+    // Forming a primary query string
     $query = "SELECT departments.id, title
                 FROM staff.departments";
-                // LEFT JOIN staff.persons
-                // ON persons.department_id = departments.id";
     $order = '';
 
+    // Completing the query string if records should be returned in the certain order
     if (isset($orderBy['fields'])) {
         $order = implode(', ', $orderBy['fields']);
         if ($order) {
@@ -17,46 +21,66 @@ function departmentAll($unAttached = false, $orderBy = [])
         }
     }
     $query  .= $order;
+    // Function dbQuery($query, $types = [], $args = [], $mode = 'r', $lastId = false) is described in Db.php
+    // Here returns an associative array of fetched records.
     $departments = dbQuery($query);
 
-    if (isset($departments['fail']) or $unAttached) {
+    if (isset($departments['fail'])) {
         return $departments;
     }
-    // return departmentSelectPersons($departments);
+    //var_dump($departments);
     return $departments;
 }
 
-function departmentById($departmentId, $unAttached = false)
+/**
+ * Forms an array containing the requested data of one department, specified by id.
+ * @param  int  $departmentId An id of the selected department.
+ * @return array  $persons associative array (size = 1) of person's, specified by id, data, 
+ * including an array of projects of this person
+ */
+function departmentById($departmentId)
 {
+    // Forming a primary query string
     $query = "SELECT id, title
                 FROM staff.departments
                 WHERE departments.id = ?";
-
+    // Function dbQuery($query, $types = [], $args = [], $mode = 'r', $lastId = false) is described in Db.php
+    // Here returns an a. array (size = 1) containing the other a. array with data of department specified by id.
     $departments = dbQuery($query, ['i'], [$departmentId]);
 
-    if (isset($departments['fail']) or $unAttached) {
+    if (isset($departments['fail'])) {
         return $departments;
     }
+    // Function departmentSelectPersons($departments) is described in Department.php
     return departmentSelectPersons($departments);
 }
 
-// Manau, reikia perrašyti iš esmės,
-// nes departamentų ir personų nesieja indexas.
+/**
+ * Includes the data about every department's persons in to the primary array
+ * @param  array  $departments associative array of departments data
+ * @return array  $departments associative array of departments data, 
+ * now including an array of persons for every departments.
+ */
 function departmentSelectPersons($departments)
 {
     foreach ($departments as $index => $department) {
+        // Function departmentPersons($department['id']) is described in Department.php
         $departments[$index]['person_id'] = departmentPersons($department['id']);
     }
     return $departments;
 }
 
-// Manau, reikia perrašyti iš esmės,
-// nes departamentų ir personų nesieja pagalbinė lentelė.
+/**
+ * Fetches persons records from db for a specific department.
+ * @param  int $departmentId 
+ * @return array $persons an associative array of persons of a specific department.
+ */
 function departmentPersons($departmentId)
 {
     $query = "SELECT id, name, lastname
                 FROM staff.persons
                 WHERE persons.department_id = ?";
+    // Function dbQuery($query, $types = [], $args = [], $mode = 'r', $lastId = false) is described in Db.php
     $persons = dbQuery($query, ['i'], [$departmentId]);
     if (isset($persons['fail'])) {
         return [['id' => null, 'title' => $persons['fail'],]];
@@ -64,6 +88,10 @@ function departmentPersons($departmentId)
     return $persons;
 }
 
+/**
+ * Saves newly entered/or updated department's data in db
+ * @return bool true in case of success
+ */
 function departmentSave()
 {
     $query = "INSERT INTO staff.departments (title)
@@ -100,6 +128,10 @@ function departmentSave()
     return true;
 }
 
+/**
+ * Returns the variable which value is html which was formed to trash request
+ * @return string , containing all html tags and data required for visualisation in the browser
+ */
 function departmentTrash()
 {
     if (isset($_POST['trash']) and !empty($_POST['trash'])) {
@@ -114,6 +146,9 @@ function departmentTrash()
     return $trash;
 }
 
+/**
+ * Sanitizes the input of department's data 
+ */
 function sanitizeDepartmentInput()
 {
     if (isset($_POST['title'])) {
@@ -133,6 +168,9 @@ function sanitizeDepartmentInput()
     }
 }
 
+/**
+ * Validates input of department's title.
+ */
 function validateDepartmentInput()
 {
     if (!$_POST['title']) {
